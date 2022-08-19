@@ -52,10 +52,13 @@ return cache()->rememberForever('posts.all',function(){
   //   }
   // return cache()->remember("posts.{$slug}",1200,fn()=> file_get_contents($path));
    
-$posts=static::all();
+$post=static::all()->firstWhere('slug',$slug);
 
-return $posts->firstWhere('slug',$slug);
+if(! $post){
+  throw new ModelNotFoundException();
+}
 
-
+return  $post;
   }
+
 }
