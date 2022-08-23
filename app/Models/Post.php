@@ -24,6 +24,10 @@ public function scopeFilter($query,array $filters){
 //    $category->whereExists(fn($query)=>$query->from('categories')->whereColumn('categories.id','posts.category_id')->where('categories.slug',$category));
           $query->whereHas('category',fn($query)=>$query->where('slug',$category)); 
     }
+    if($filters['author'] ?? false){
+//    $category->whereExists(fn($query)=>$query->from('categories')->whereColumn('categories.id','posts.category_id')->where('categories.slug',$category));
+          $query->whereHas('author',fn($query)=>$query->where('username',$author)); 
+    }
 }
 
     public function category(){

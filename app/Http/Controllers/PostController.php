@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Post;
-
+// use App\View\Components\Category;
 class PostController extends Controller
 {
     public function index()
@@ -19,8 +19,7 @@ class PostController extends Controller
         //     'categories'=>Category::all()
         // ]);
         return view('posts',[
-            'posts'=>Post::latest()->filter(request(['search','category']))->get(),
-            'categories'=>Category::all()
+            'posts'=>Post::latest()->filter(request(['search','category','author']))->get()
         ]);
     }
 
