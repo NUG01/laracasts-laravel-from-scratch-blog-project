@@ -5,9 +5,11 @@
       </button>
     </x-slot>
     
-    <x-dropdown-item href="/">All</x-dropdown-item>
+    {{-- <x-dropdown-item href="/">All</x-dropdown-item> --}}
+    <x-dropdown-item href="/?{{ http_build_query(request()->except('category','page')) }}" :active="request()->routeIs('home')">All</x-dropdown-item>
 @foreach($categories as $category)
-<x-dropdown-item href="/categories/{{ $category->slug }}" :active=true>{{ ucwords($category->name) }}</x-dropdown-item>
+{{-- <x-dropdown-item href="/categories/{{ $category->slug }}" :active=true>{{ ucwords($category->name) }}</x-dropdown-item> --}}
+<x-dropdown-item href="/?category/{{ $category->slug }}&{{ http_build_query(request()->except('category','page')) }}" :active='request()->is("categories/{$category->slug}")'>{{ ucwords($category->name) }}</x-dropdown-item>
 {{-- <a href="/categories/{{ $category->slug }}" class="block text-left px-3 text-sm leading-5 hover:bg-gray-300 focus:bg-gray-300 {{ isset($currentCategory)&&$currentCategory->is($category)?'bg-blue-500 text-white':'' }}">{{ ucwords($category->name) }}</a> --}}
 @endforeach
   </x-dropdown>
