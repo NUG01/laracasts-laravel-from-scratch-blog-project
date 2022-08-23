@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
 use App\Models\User;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +38,6 @@ Route::get('authors/{author:username}',function(User $author){
 
     ]);
 });
+
+Route::get('register',[RegisterController::class, 'create' ]);
+Route::post('register',[RegisterController::class, 'store' ]);
