@@ -5,6 +5,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
 use App\Models\User;
+use App\Http\Controllers\PostController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,36 +17,9 @@ use App\Models\User;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', [PostController::class,'index']);
 
-// $files=File::files(resource_path('posts'));
-// // $posts=[];
-// $posts=array_map(function($file){
-//     $document=YamlFrontMatter::parseFile($file);
-// return new Post($document->title,$document->excerpt,$document->date,$document->body(),$document->slug,);
-// },$files);
-
-
-// $posts=collect(File::files(resource_path('posts')))->map(function($file){
-//     return YamlFrontMatter::parseFile($file);
-// })->map(function($document){
-//     return new Post($document->title,$document->excerpt,$document->date,$document->body(),$document->slug,);
-// });
-
-$posts=Post::all();
- 
-    return view('posts',[
-        'posts'=>Post::latest()->get(),
-        'categories'=>Category::all()
-    ]);
-});
-
-Route::get('posts/{post:slug}',function(Post $post){
-    // $post=Post::find($post);
-return view('post',[
-    'post'=>$post
-]);
-});
+Route::get('posts/{post:slug}',[PostController::class,'show']);
 
 Route::get('categories/{category:slug}',function(Category $category){
     return view('posts',[
@@ -54,6 +28,8 @@ Route::get('categories/{category:slug}',function(Category $category){
         'categories'=>Category::all()
     ]);
 });
+
+
 Route::get('authors/{author:username}',function(User $author){
     return view('posts',[
         'posts'=>$author->posts,

@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Models;
-// use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\RelationNotFoundException;
 use App\Models\User;
+use App\Http\Controllers;
 class Post extends Model
 {
     use HasFactory;
@@ -16,6 +15,16 @@ class Post extends Model
 
     protected $with=['category','author'];
 
+public function scopeFilter($query,array $filters){
+    if($filters['search'] ?? false){
+    $query->where('title','like','%' . request('search') . '%')->orWhere('body','like','%' . request('search') . '%');
+           
+    }
+    if($filters['category'] ?? false){
+//    $category->whereExists(fn($query)=>$query->from('categories')->whereColumn('categories.id','posts.category_id')->where('categories.slug',$category));
+          $query->whereHas('category',fn($query)=>$query->where('slug',$category)); 
+    }
+}
 
     public function category(){
         
