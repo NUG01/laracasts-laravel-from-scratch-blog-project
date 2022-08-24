@@ -7,6 +7,7 @@ use Spatie\YamlFrontMatter\YamlFrontMatter;
 use App\Models\User;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SessionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,5 +40,8 @@ Route::get('authors/{author:username}',function(User $author){
     ]);
 });
 
-Route::get('register',[RegisterController::class, 'create' ]);
-Route::post('register',[RegisterController::class, 'store' ]);
+Route::get('register',[RegisterController::class, 'create' ])->middleware('guest');
+Route::post('register',[RegisterController::class, 'store' ])->middleware('guest');
+Route::get('login',[SessionsController::class, 'create'])->middleware('guest');
+Route::post('sessions',[SessionsController::class, 'store'])->middleware('guest');
+Route::post('logout',[SessionsController::class, 'destroy'])->middleware('auth');
