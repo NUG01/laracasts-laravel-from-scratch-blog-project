@@ -18,8 +18,8 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-           'name'=>$this->faker->unique()->word(),
-           'slug'=>$this->faker->unique()->slug()
+           'name'=>$this->faker->word(),
+           'slug'=>$this->faker->slug()
 
         ];
     }
