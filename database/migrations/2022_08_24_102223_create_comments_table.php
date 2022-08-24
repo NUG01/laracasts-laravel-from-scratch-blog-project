@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('post_id')->cascadeOnDelete();
             $table->foreignId('user_id')->cascadeOnDelete();
+      
    
             $table->text('body');
             $table->timestamps();
