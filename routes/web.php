@@ -10,6 +10,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\PostCommentsController;
 use App\Http\Controllers\PostCommentsController\storeCom;
+use Illuminate\Validation\ValidationException;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,30 @@ use App\Http\Controllers\PostCommentsController\storeCom;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::post('newsletter',function(){
+    request()->validate(['email'=>'required|email']);
+  
+    $mailchimp = new \MailchimpMarketing\ApiClient();
+
+    $mailchimp->setConfig([
+        'apiKey' => config('services.mailchimp.key'),
+        'server' => 'us9'
+    ]);
+    try{
+        $response = $mailchimp->lists->addListMember("99259d44b6",[
+            'email_address'=>request('email'),
+            'status'=>'subscribed'
+        ]);
+
+    }catch(\Exception $e){
+       \Illuminate\Validation\ValidationException::withMessages([
+        'email'=>'This email could not be added to our newsletter list.'
+       ]);
+    }
+    return redirect('/')->with('success','You are now signed up for our newsletter!');
+});
+
 
 Route::get('/', [PostController::class,'index']);
 
