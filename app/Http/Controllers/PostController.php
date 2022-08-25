@@ -29,5 +29,19 @@ class PostController extends Controller
         ]);
     }
     
+     public function create(){
 
+
+        if(auth()->guest()){
+            abort(403);
+        }
+        if(auth()->user()?->username!='nugola7'){
+            abort(403);
+        
+        }
+
+        
+
+        return view('post-admin');
+     }
 }
