@@ -11,6 +11,7 @@ use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\PostCommentsController;
 use App\Http\Controllers\PostCommentsController\storeCom;
 use Illuminate\Validation\ValidationException;
+use App\Services\Newsletter2;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,20 +24,21 @@ use Illuminate\Validation\ValidationException;
 |
 */
 
-Route::post('newsletter',function(){
+Route::post('newsletter',function(Newsletter2 $newsletter){
     request()->validate(['email'=>'required|email']);
   
-    $mailchimp = new \MailchimpMarketing\ApiClient();
+    // $mailchimp = new \MailchimpMarketing\ApiClient();
 
-    $mailchimp->setConfig([
-        'apiKey' => config('services.mailchimp.key'),
-        'server' => 'us9'
-    ]);
+    // $mailchimp->setConfig([
+    //     'apiKey' => config('services.mailchimp.key'),
+    //     'server' => 'us9'
+    // ]);
     try{
-        $response = $mailchimp->lists->addListMember("99259d44b6",[
-            'email_address'=>request('email'),
-            'status'=>'subscribed'
-        ]);
+    //   $newsletter=new Newsletter2();
+
+    //   $newsletter->subscribe(request('email'));
+
+    $newsletter->subscribe(request('email'));
 
     }catch(\Exception $e){
        \Illuminate\Validation\ValidationException::withMessages([
