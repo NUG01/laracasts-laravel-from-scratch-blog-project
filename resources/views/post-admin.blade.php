@@ -19,6 +19,7 @@
         </div>
 
         <div class="mt-8 md:mt-0 flex items-center">
+
             @auth
                 <span class="text-xs font-bold uppercase">Welcome, {{ auth()->user()->name }}!</span>
                 <form method="POST" action="/logout" class="text-xs font-semibold text-blue-500 ml-6">
@@ -37,9 +38,11 @@
         </div>
     </nav>
 
-    <div class="flex items-center w-full justify-center p-12">
-        <div class="max-w-sm bg-gray-200 pt-6 pl-12 pb-6 pr-12 rounded-xl">
-            <form method="POST" action="/admin/posts">
+    <h1 class="text-lg font-bold text-center mt-6">Publish New Post</h1>
+
+    <div class="flex items-center w-full justify-center p-12 pt-3">
+        <div class="max-w-xs bg-gray-200 pt-6 pl-12 pb-6 pr-12 rounded-xl">
+            <form method="POST" action="/admin/posts" enctype="multipartpart/form-data">
                 @csrf
                 <div class="mb-6">
                     <label class="block mb-2 uppercase font-bold text-xs text-gray-700" for="title">
@@ -60,6 +63,18 @@
                     </label>
                     <input value="{{ old('slug') }}" class="border border-gray-400 p-2 w-full" type="text"
                         name="slug" id="slug" required>
+                    @error('slug')
+                        <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                    @enderror
+
+                </div>
+                <div class="mb-6">
+                    <label class="block mb-2 uppercase font-bold text-xs text-gray-700" for="thumbnail">
+                        Thumbnail
+
+                    </label>
+                    <input value="{{ old('thumbnail') }}" class="border border-gray-400 p-2 w-full" type="file"
+                        name="thumbnail" id="thumbnail" required>
                     @error('slug')
                         <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                     @enderror
@@ -97,7 +112,7 @@
                         @php
                             $categories = \App\Models\Category::all();
                         @endphp
-
+                        <option value="something">Something</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}"
                                 {{ old('category_id') == $category->id ? 'selected' : '' }}>
